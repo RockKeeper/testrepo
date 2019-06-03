@@ -107,4 +107,4 @@ spec:
           - path: /
             backend:
               serviceName: web-__CI_BUILD_REF_SLUG__
-              servicePort: 8000
+              servicePort: 80
