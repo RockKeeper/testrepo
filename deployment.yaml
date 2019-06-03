@@ -2,12 +2,18 @@
 #deploy the PHP and Apache container from heptio/example-__CI_BUILD_REF_SLUG__
 
 apiVersion: extensions/v1beta1
+kind: Namespace
+  apiVersion: v1
+  metadata:
+    name: __KUBE_NAMESPACE__
+---
 # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 kind: Deployment
 metadata:
+  namespace: __KUBE_NAMESPACE__
   name: __CI_BUILD_REF_SLUG__
   labels:
-    heptio.com/example: lamp
+    cloudcapital/example: lamp
 # number of PHP pods (replicas) to run
 # increase this number if you need to scale PHP horizontally
 # since we have 3, the LoadBalancer will serve our app from all 3
@@ -39,10 +45,6 @@ spec:
         imagePullPolicy: Always
         name: __CI_BUILD_REF_SLUG__
         #reserving resources from our cluster
-        resources:
-          requests:
-            cpu: 100m
-            memory: 1Gi
         # env sets environment variables in the container
         # exactly like environment variables set from the command line
         # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -63,8 +65,9 @@ metadata:
   # the name web here means you can reference the PHP pods
   # using the host web.default.svc.cluster.local from within the cluster
   name: web-__CI_BUILD_REF_SLUG__
+  namespace: __KUBE_NAMESPACE__
   labels:
-    "heptio.com/example": lamp
+    "cloudcapital/example": lamp
 spec:
   ports:
   # make the service available on this port
@@ -91,7 +94,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: web-__CI_BUILD_REF_SLUG__
-  namespace: presentation-gitlab-k8s
+  namespace: __KUBE_NAMESPACE__
   labels:
     app: __CI_BUILD_REF_SLUG__
   annotations:
@@ -103,7 +106,7 @@ spec:
         - __CI_BUILD_REF_SLUG__.116.203.190.175.xip.io
       # the secret used here is an unsigned wildcard cert for demo purposes
       # use your own or comment this out
-      secretName: tls-wildcard-demo
+      #secretName: tls-wildcard-demo
   rules:
     - host: __CI_BUILD_REF_SLUG__.116.203.190.175.xip.io
       http:

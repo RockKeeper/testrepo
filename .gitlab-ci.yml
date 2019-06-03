@@ -38,6 +38,15 @@ deployment:
   stage: deploy
   script:
     - kubectl version
+    - kubectl create secret -n $KUBE_NAMESPACE \
+      docker-registry gitlab-registry \
+      --docker-server="$CI_REGISTRY" \
+      --docker-username="$CI_REGISTRY_USER" \
+      --docker-password="$CI_REGISTRY_PASSWORD" \
+      --docker-email="$GITLAB_USER_EMAIL" \
+      -o yaml --dry-run | kubectl replace -n $KUBE_NAMESPACE --force -f -
+
+    - sed -i "s/__KUBE_NAMESPACE__/${KUBE_NAMESPACE}/" deployment.yaml
     - sed -i "s/__CI_BUILD_REF_SLUG__/${CI_ENVIRONMENT_SLUG}/" deployment.yaml
     - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" deployment.yaml
     - kubectl apply -f deployment.yaml
