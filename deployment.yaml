@@ -12,7 +12,7 @@ metadata:
 # increase this number if you need to scale PHP horizontally
 # since we have 3, the LoadBalancer will serve our app from all 3
 spec:
-  replicas: 1
+  replicas: 3
   # make replicas of kubernetes objects with the label app: __CI_BUILD_REF_SLUG__
   selector:
     matchLabels:
