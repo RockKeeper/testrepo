@@ -1,10 +1,5 @@
 # By Sharon Campbell, Ken Simon, and Joe Beda for Heptio
 #deploy the PHP and Apache container from heptio/example-__CI_BUILD_REF_SLUG__
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: __KUBE_NAMESPACE__
----
 # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 apiVersion: extensions/v1beta1
 kind: Deployment
