@@ -66,8 +66,6 @@ spec:
   # make the service available on this port
   - port: 80
     protocol: TCP
-  - port: 443
-    protocol: TCP
   selector:
     # apply this service to the pod with the label app: mysql
     app: __CI_BUILD_REF_SLUG__
