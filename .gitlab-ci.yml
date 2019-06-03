@@ -36,4 +36,9 @@ build:
 deployment:
   stage: deploy
   script:
-    - echo "deployment!"
+    - kubectl version
+    - sed -i "s/__CI_BUILD_REF_SLUG__/${CI_ENVIRONMENT_SLUG}/" deployment.yaml
+    - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" deployment.yaml
+    - kubectl apply -f deployment.yaml
+    - kubectl rollout status -f deployment.yaml
+    - kubectl get all,ing -l app=${CI_ENVIRONMENT_SLUG}
