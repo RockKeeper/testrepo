@@ -28,10 +28,9 @@ deployment:
   image: lachlanevenson/k8s-kubectl:latest
   environment:
     name: DEV
-    url: https://dev.116.203.190.175.xip.io
+    url: https://master.116.203.190.175.xip.io
   stage: deploy
   script:
-    - env
     - kubectl version
     - kubectl create secret -n "${KUBE_NAMESPACE}" docker-registry gitlab-registry --docker-server="${CI_REGISTRY}" --docker-username="${CI_REGISTRY_USER}" --docker-password="${CI_JOB_TOKEN}" --docker-email="${GITLAB_USER_EMAIL}" -o yaml --dry-run | sed 's/dockercfg/dockerconfigjson/g' | kubectl replace -n "$KUBE_NAMESPACE" --force -f -
     - sed -i "s/__KUBE_NAMESPACE__/${KUBE_NAMESPACE}/" deployment.yaml
