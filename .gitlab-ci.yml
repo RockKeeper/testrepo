@@ -34,6 +34,10 @@ build:
     - master
     
 deployment:
+  image: lachlanevenson/k8s-kubectl:latest
+  environment:
+    name: DEV
+    url: https://dev.116.203.190.175.xip.io
   stage: deploy
   script:
     - kubectl version
