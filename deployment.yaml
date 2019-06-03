@@ -85,7 +85,7 @@ spec:
 
   # https://kubernetes.io/docs/getting-started-guides/scratch/#cloud-providers
   # https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
