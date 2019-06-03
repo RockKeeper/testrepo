@@ -1,11 +1,12 @@
 # By Sharon Campbell, Ken Simon, and Joe Beda for Heptio
 #deploy the PHP and Apache container from heptio/example-__CI_BUILD_REF_SLUG__
-apiVersion: extensions/v1beta1
+apiVersion: v1
 kind: Namespace
 metadata:
   name: __KUBE_NAMESPACE__
 ---
 # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   namespace: __KUBE_NAMESPACE__
@@ -55,7 +56,6 @@ spec:
 
 ---
 # expose PHP and Apache on port 80 to the world through a load balancer
-
 apiVersion: v1
 # https://kubernetes.io/docs/concepts/services-networking/service/
 kind: Service
