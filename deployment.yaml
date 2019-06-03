@@ -28,6 +28,8 @@ spec:
         app: __CI_BUILD_REF_SLUG__
     # details of what container(s) will actually be run in this pod
     spec:
+      imagePullSecrets:
+        - name: gitlab-registry
       # deploys PHP and Apache and our custom application from the specified Docker Hub image
       containers:
       # deploys this custom PHP image from Docker Hub
