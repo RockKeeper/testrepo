@@ -2,6 +2,12 @@
 # Official docker image.
 image: docker:latest
 
+
+stages:
+  - build
+  - deploy
+
+
 variables:
     DOCKER_HOST: tcp://localhost:2375
     
@@ -26,3 +32,8 @@ build:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   except:
     - master
+    
+deployment:
+  stage: deploy
+  script:
+    - echo "deployment!"
