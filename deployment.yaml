@@ -36,7 +36,6 @@ spec:
       # https://hub.docker.com/r/heptio/example-__CI_BUILD_REF_SLUG__/
       - image: registry.gitlab.com/cloudcapital/kubernetes-test:__VERSION__
         # download a fresh copy of the image if available, even if it has the same version label
-        imagePullPolicy: Always
         name: __CI_BUILD_REF_SLUG__
         #reserving resources from our cluster
         # env sets environment variables in the container
