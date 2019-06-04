@@ -12,7 +12,7 @@ metadata:
 # increase this number if you need to scale PHP horizontally
 # since we have 3, the LoadBalancer will serve our app from all 3
 spec:
-  replicas: 3
+  replicas: 1
   # make replicas of kubernetes objects with the label app: __CI_BUILD_REF_SLUG__
   selector:
     matchLabels:
@@ -37,6 +37,9 @@ spec:
       - image: registry.gitlab.com/cloudcapital/kubernetes-test:__VERSION__
         # download a fresh copy of the image if available, even if it has the same version label
         name: tool
+        env:
+        - name: APP_VERSION
+          value: __VERSION__
         #reserving resources from our cluster
         # env sets environment variables in the container
         # exactly like environment variables set from the command line

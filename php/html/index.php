@@ -1,5 +1,5 @@
 <?php
-    echo "TEST:";
-    echo gethostname();
+
+    echo "VERSION: ".getenv('APP_VERSION');
     phpinfo();
 ?>
