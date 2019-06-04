@@ -5,7 +5,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   namespace: __KUBE_NAMESPACE__
-  name: __CI_BUILD_REF_SLUG__
+  name: cloudcapital-tool
   labels:
     cloudcapital/example: lamp
 # number of PHP pods (replicas) to run
@@ -16,7 +16,7 @@ spec:
   # make replicas of kubernetes objects with the label app: __CI_BUILD_REF_SLUG__
   selector:
     matchLabels:
-      app: __CI_BUILD_REF_SLUG__
+      app: tool-__CI_BUILD_REF_SLUG__
   # the pod template describes what type of pod to create
   # when the defined number of replicas are not up
   # in this case, the pod that will be created is the one labeled app: __CI_BUILD_REF_SLUG__
@@ -25,7 +25,7 @@ spec:
       # this label is referenced by the selector for the Deployment, which creates pods
       # and by the selector for the Service, which creates the LoadBalancer
       labels:
-        app: __CI_BUILD_REF_SLUG__
+        app: tool-__CI_BUILD_REF_SLUG__
     # details of what container(s) will actually be run in this pod
     spec:
       imagePullSecrets:
@@ -36,7 +36,7 @@ spec:
       # https://hub.docker.com/r/heptio/example-__CI_BUILD_REF_SLUG__/
       - image: registry.gitlab.com/cloudcapital/kubernetes-test:__VERSION__
         # download a fresh copy of the image if available, even if it has the same version label
-        name: __CI_BUILD_REF_SLUG__
+        name: tool
         #reserving resources from our cluster
         # env sets environment variables in the container
         # exactly like environment variables set from the command line
@@ -56,7 +56,7 @@ kind: Service
 metadata:
   # the name web here means you can reference the PHP pods
   # using the host web.default.svc.cluster.local from within the cluster
-  name: web-__CI_BUILD_REF_SLUG__
+  name: cloudcapital-tool
   namespace: __KUBE_NAMESPACE__
   labels:
     "cloudcapital/example": lamp
@@ -67,25 +67,25 @@ spec:
     protocol: TCP
   selector:
     # apply this service to the pod with the label app: mysql
-    app: __CI_BUILD_REF_SLUG__
+    app: tool-__CI_BUILD_REF_SLUG__
   type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: web-__CI_BUILD_REF_SLUG__
+  name: cloudcapital-tool
   namespace: __KUBE_NAMESPACE__
   labels:
-    app: __CI_BUILD_REF_SLUG__
+    app: tool-__CI_BUILD_REF_SLUG__
   annotations:
     kubernetes.io/tls-acme: "true"
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: __CI_BUILD_REF_SLUG__.116.203.190.175.xip.io
+    - host: tool.116.203.190.175.xip.io
       http:
         paths:
           - path: /
             backend:
-              serviceName: web-__CI_BUILD_REF_SLUG__
+              serviceName: cloudcapital-tool
               servicePort: 80
