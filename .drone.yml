@@ -1,0 +1,5 @@
+steps:
+  - name: build
+    image: docker:dind
+    commands:
+      - docker build -t foobar:1 ./php
